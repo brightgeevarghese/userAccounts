@@ -9,6 +9,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.mongodb.core.MongoTemplate;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +20,7 @@ public class Mdemo1Application {
 
     private final UserService userService;
     private final AccountServce accountServce;
+    private final MongoTemplate mongoTemplate;
 
     public static void main(String[] args) {
         SpringApplication.run(Mdemo1Application.class, args);
@@ -27,8 +29,9 @@ public class Mdemo1Application {
     @Bean
     CommandLineRunner commandLineRunner() {
         return args -> {
-            accountServce.deleteAllAccounts();
-            userService.deleteAllUsers();
+            mongoTemplate.getMongoDatabaseFactory().getMongoDatabase().drop();
+//            accountServce.deleteAllAccounts();
+//            userService.deleteAllUsers();
             //1. Create users, but do not save them before saving their associated Account objects
             User user1 = new User("username1", "pwd1");
             User user2 = new User("username2", "pwd2");
